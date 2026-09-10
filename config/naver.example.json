@@ -1,0 +1,11 @@
+{
+  "queries": [
+    "서울역 맛집",
+    "성수동 맛집"
+  ],
+  "max_results_per_query": 8,
+  "include_menu": true,
+  "delay_ms": 1400,
+  "navigation_timeout_ms": 30000,
+  "collection": "crawler_items"
+}
