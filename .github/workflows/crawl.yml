@@ -1,0 +1,51 @@
+name: Crawl and sync Firestore
+
+on:
+  schedule:
+    # Avoid the top of the hour, where scheduled Actions are often delayed.
+    - cron: "17 * * * *"
+  workflow_dispatch:
+    inputs:
+      source:
+        description: "Optional source key to run"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: leap-crawler
+  cancel-in-progress: false
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements.txt
+
+      - name: Run crawler
+        env:
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          CRAWLER_SOURCES_JSON: ${{ secrets.CRAWLER_SOURCES_JSON }}
+          SOURCE_INPUT: ${{ inputs.source }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -n "${SOURCE_INPUT:-}" ]]; then
+            python crawler.py --source "$SOURCE_INPUT"
+          else
+            python crawler.py
+          fi
