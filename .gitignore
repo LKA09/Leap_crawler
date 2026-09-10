@@ -4,6 +4,7 @@ __pycache__/
 venv/
 .env
 service-account*.json
+config/sources.json
 .firebase/
 .pytest_cache/
 .DS_Store
