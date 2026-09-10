@@ -1,0 +1,41 @@
+{
+  "sources": [
+    {
+      "key": "example",
+      "enabled": true,
+      "url": "https://example.com",
+      "collection": "crawler_items",
+      "item_selector": "article",
+      "allow_empty": false,
+      "fields": {
+        "title": {
+          "selector": "h2",
+          "type": "text",
+          "required": true
+        },
+        "url": {
+          "selector": "a",
+          "type": "attr",
+          "attr": "href",
+          "required": true,
+          "absolute_url": true
+        },
+        "summary": {
+          "selector": "p",
+          "type": "text"
+        },
+        "imageUrl": {
+          "selector": "img",
+          "type": "attr",
+          "attr": "src",
+          "absolute_url": true
+        },
+        "publishedAt": {
+          "selector": "time",
+          "type": "attr",
+          "attr": "datetime"
+        }
+      }
+    }
+  ]
+}
